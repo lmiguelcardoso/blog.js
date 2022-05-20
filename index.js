@@ -6,6 +6,8 @@ const connection = require('./database/database.js')
 const categoriesController = require('./categories/categoriesController.js')
 const articlesController = require('./articles/articlesController.js');
 const Article = require('./articles/Articles.js');
+const Category = require('./categories/Category.js');
+const req = require('express/lib/request');
 
 
 //DATABASE
@@ -24,7 +26,12 @@ app.use("/",articlesController)
 app.use("/",categoriesController)
 
 app.get('/',(req,res)=>{
-    Article.findAll().then((articles)=>res.render('index',{articles:articles}))
+    Article.findAll({
+        order:[['id', 'DESC']]
+    }).then((articles)=>{
+        Category.findAll().then(categories=>{
+            res.render('index',{articles:articles, categories: categories})})
+        })
 })
 
 app.get('/:slug',(req,res)=>{
@@ -34,7 +41,9 @@ app.get('/:slug',(req,res)=>{
         where:{slug: slug}
     }).then(article=>{
         if(article != undefined){
-            res.render('article',{article:article})
+            Category.findAll().then(categories=>{
+                res.render('article',{article: article, categories:categories})
+            })
         }else{
             res.redirect('/')
         }
@@ -44,6 +53,23 @@ app.get('/:slug',(req,res)=>{
 
 })
 
+app.get('/category/:slug',(req,res)=>{
+    let slug = req.params.slug;
+    Category.findOne({
+        where:{
+            slug:slug
+        },
+        include: [{model: Article}]
+    }).then(category=>{
+        if(category != undefined){
+            Category.findAll().then(categories=>{
+                res.render('index',{articles: category.articles, categories:categories})
+            })
+        }else{
+            res.redirect('/')
+        }
+    }).catch(error=>res.redirect('/'))
+})
 app.listen(3000,()=>{
     console.log("server running on port 3000")
 })

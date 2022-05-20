@@ -1,11 +1,17 @@
-<nav class="navbar navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a href="/" class="navbar-brand">
         Blog
     </a>
 
-    <ul class="navbar-nav me-auto">
+    <ul class="navbar-nav me-auto" disp>
         <li class="nav-item" >
             <a href="/" class="nav-link" style="display: inline;">Home</a>
         </li>
+
+        <% categories.forEach(category =>{ %>
+            <li class="nav-item" >
+                <a href="/category/<%= category.slug%>" class="nav-link" style="display: inline;"><%= category.title %></a>
+            </li>
+        <% }) %>
     </ul>
 </nav>
