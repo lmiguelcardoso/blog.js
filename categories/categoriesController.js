@@ -88,4 +88,5 @@ router.post('/admin/category/update', (req,res)=>{
     }).then(res.redirect('/admin/categories'))
 
 })
+
 module.exports = router;
