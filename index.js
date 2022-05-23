@@ -1,13 +1,17 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
+//DB CONNECTION
 const connection = require('./database/database.js')
-
+//CONTROLLER REQUIRE
 const categoriesController = require('./categories/categoriesController.js')
 const articlesController = require('./articles/articlesController.js');
+const usersController = require('./users/usersController')
+//MODEL REQUIRE
 const Article = require('./articles/Articles.js');
 const Category = require('./categories/Category.js');
-const req = require('express/lib/request');
+const User = require('./users/User')
+
 
 
 //DATABASE
@@ -24,6 +28,7 @@ app.use(express.static('public'))
 //ROUTES
 app.use("/",articlesController)
 app.use("/",categoriesController)
+app.use("/", usersController)
 
 app.get('/',(req,res)=>{
     Article.findAll({
