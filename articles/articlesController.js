@@ -21,8 +21,7 @@ router.get('/admin/articles', (req,res)=>{
         include: [{model: Category}]
     }).then((articles)=>{
         res.render('./admin/articles/index',{
-            articles: articles
-            
+            articles: articles          
         })
 
     })
@@ -101,8 +100,6 @@ router.post('/admin/articles/update',(req,res)=>{
         }).then(res.redirect('/admin/articles'))
    
 })
-
-
 
 // PAGINATION
 router.get('/articles/page/:num',(req,res)=>{
