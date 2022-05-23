@@ -1,1 +1,1 @@
-a simple blog built with node.js, with features like login system, pagination, admin dashboard, etc.
+a blogging plataform built with node.js and mvc design pattern, with features like login system, pagination, admin dashboard, etc.
