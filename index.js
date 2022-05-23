@@ -30,6 +30,7 @@ app.use("/",articlesController)
 app.use("/",categoriesController)
 app.use("/", usersController)
 
+// INDEX VIEW
 app.get('/',(req,res)=>{
     Article.findAll({
         order:[['id', 'DESC']],
@@ -39,7 +40,7 @@ app.get('/',(req,res)=>{
             res.render('index',{articles:articles, categories: categories})})
         })
 })
-
+// ARTICLE VIEW 
 app.get('/:slug',(req,res)=>{
     let slug = req.params.slug;
 
@@ -58,7 +59,7 @@ app.get('/:slug',(req,res)=>{
     })
 
 })
-
+// ARTICLES BY CATEGORY VIEW
 app.get('/category/:slug',(req,res)=>{
     let slug = req.params.slug;
     Category.findOne({
