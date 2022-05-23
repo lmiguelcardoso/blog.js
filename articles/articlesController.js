@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Category = require('../categories/Category')
 const Article = require('./Articles')
-const slugify = require('slugify')
+const slugify = require('slugify');
+const parse = require('nodemon/lib/cli/parse');
 
 
 // POST ARTICLE VIEW
@@ -101,5 +102,48 @@ router.post('/admin/articles/update',(req,res)=>{
    
 })
 
+
+
+// PAGINATION
+router.get('/articles/page/:num',(req,res)=>{
+    let page = req.params.num;
+    let offset = 0
+    
+    if(isNaN(page) || page == 1 || page ==0){
+        offset = 0;
+    }else{
+        offset = (parseInt(page)-1) * 4;
+    }
+
+    Article.findAndCountAll({
+        order:[['id', 'DESC']],
+        limit:4,
+        offset: offset
+    }).then(articles=>{
+
+        let next;
+        if(offset +4 >= articles.count){
+            next = false;
+        }else{
+            next = true;
+        }
+
+        let result = {
+            page: parseInt(page),
+            next: next,
+            articles: articles
+        }
+
+        Category.findAll().then(categories=>{
+            res.render('admin/articles/page',{
+                result: result,
+                categories: categories
+            })
+        })
+
+        
+    })
+
+})
 
 module.exports = router;

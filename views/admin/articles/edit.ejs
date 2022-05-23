@@ -15,10 +15,13 @@
                 <input type="hidden" value="<%= article.id%>" name="id">
                 <input class="form-control" type="text" name="title" id=""  value="<%=article.title%>"placeholder="Defina o título a do artigo">             
                 <span>Categoria:</span>
-                <select name="category" class="form-control">
-                    <option value="<%= article.category.id%>"><%= article.category.title%></option>
+                <select name="category" class="form-control">                   
                     <% categories.forEach((category)=>{ %>
-                        <option value="<%=category.id%>" ><%=category.title%></option>
+                        <% if(category.id == article.categoryId){ %>
+                            <option value="<%= article.category.id%>" selected><%= article.category.title%></option>
+                        <%}else{%>
+                            <option value="<%=category.id%>" ><%=category.title%></option>
+                        <%} %>
                    <% }) %>
                 </select>
                 <br>
