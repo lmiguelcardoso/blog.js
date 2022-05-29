@@ -2,17 +2,25 @@
 <%- include('../../partials/header.ejs') %>
 
 <div class="container">
+    <hr>
     <h2>Usuarios</h2>
+    <a href="/admin/users/create">
+        <span>Criar Usuario</span>
+    </a>
     <hr>
     <table class="table table-bordered">
         <thead>
             <th>id</th>
             <th>Email</th>
+            <th>Ações</th>
         </thead>
         <tbody>
             <% users.forEach((user)=>{%>
-                <td><%= user.id %></td>
-                <td><%= user.email %></td>
+                <tr>
+                    <td><%= user.id %></td>
+                    <td><%= user.email %></td>
+                    <td><a href="/admin/user/<%=user.id%>" class="btn btn-warning">Editar Email</a> </td>
+                </tr>
             <% }) %>
         </tbody>      
     </table>

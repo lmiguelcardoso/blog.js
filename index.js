@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
+const session = require('express-session')
+
 //DB CONNECTION
 const connection = require('./database/database.js')
 //CONTROLLER REQUIRE
@@ -23,6 +25,11 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 //STATIC FILES
 app.use(express.static('public'))
+//SESSIONS
+app.use(session({
+    secret:'fjnsanjfasnfasjfnsa',
+    cookie:{maxAge:36000000}
+}))
 
 
 //ROUTES
