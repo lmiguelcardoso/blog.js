@@ -2,16 +2,17 @@ const express = require('express');
 const router = express.Router();
 const Category = require('./Category')
 const slugify = require('slugify')
+const adminAuth = require('../middlewares/adminAuth')
 
 
 
 // SAVE CATEGORY VIEW
-router.get('/admin/categories/new',(req,res)=>{
+router.get('/admin/categories/new',adminAuth,(req,res)=>{
     res.render('admin/categories/new')
 })
 
 //SAVE CATEGORY ROUTE
-router.post('/categories/save',(req,res)=>{
+router.post('/categories/save',adminAuth,(req,res)=>{
     let title = req.body.title
     if(title){
         Category.create({
@@ -25,7 +26,7 @@ router.post('/categories/save',(req,res)=>{
     }
 })
 // CATEGORY INDEX
-router.get('/admin/categories', (req,res)=>{
+router.get('/admin/categories',adminAuth,(req,res)=>{
     Category.findAll().then(Category=>{
         res.render('admin/categories/index',{
             categories: Category
@@ -35,7 +36,7 @@ router.get('/admin/categories', (req,res)=>{
 })
 
 // DELETE CATEGORY ROUTE
-router.post('/admin/categories/delete',(req,res)=>{
+router.post('/admin/categories/delete',adminAuth,(req,res)=>{
     let id = req.body.id;
     if(id != undefined){
         if(!isNaN(id)){
@@ -54,7 +55,7 @@ router.post('/admin/categories/delete',(req,res)=>{
 })
 
 // EDIT CATEGORY VIEW
-router.get('/admin/categories/edit/:id',(req,res)=>{
+router.get('/admin/categories/edit/:id',adminAuth,(req,res)=>{
     let id = req.params.id;
     if(isNaN(id)){
         res.redirect('/admin/categories')
@@ -73,7 +74,7 @@ router.get('/admin/categories/edit/:id',(req,res)=>{
 
 
 //EDIT CATEGORY ROUTE
-router.post('/admin/category/update', (req,res)=>{
+router.post('/admin/category/update',adminAuth, (req,res)=>{
     let id = req.body.id;
     let title = req.body.title;
 

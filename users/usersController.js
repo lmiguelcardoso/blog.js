@@ -3,12 +3,15 @@ const router = express.Router();
 const User = require('./User')
 const bcrypt = require('bcryptjs');
 const bcryptjs = require('bcryptjs');
-const session = require('express-session')
+const session = require('express-session');
+const { resetWatchers } = require('nodemon/lib/monitor/watch');
+const adminAuth = require('../middlewares/adminAuth')
+
 
 
 
 // USERS LIST
-router.get('/admin/users',(req,res)=>{
+router.get('/admin/users',adminAuth,(req,res)=>{
     User.findAll().then(users=>{
         res.render('./admin/users/index',{
             users: users
@@ -17,12 +20,12 @@ router.get('/admin/users',(req,res)=>{
    
 })
 // CREATE USER VIEW
-router.get('/admin/users/create',(req,res)=>{
+router.get('/admin/users/create',adminAuth,(req,res)=>{
     res.render('admin/users/create')
 
 })
 // CREATE USER ROUTE
-router.post('/user/create',(req,res)=>{
+router.post('/user/create',adminAuth,(req,res)=>{
     let email = req.body.email;
     let password = req.body.password;
 
@@ -44,7 +47,7 @@ router.post('/user/create',(req,res)=>{
    
 })
 // EDIT USER EMAIL
-router.get('/admin/user/:id',(req,res)=>{
+router.get('/admin/user/:id',adminAuth,(req,res)=>{
     let id = req.params.id;
 
     User.findByPk(id).then(user=>{
@@ -56,7 +59,7 @@ router.get('/admin/user/:id',(req,res)=>{
     })
 })
 // EDIT USER ROUTE
-router.post('/user/edit',(req,res)=>{
+router.post('/user/edit',adminAuth,(req,res)=>{
     let email = req.body.email;
     let id = req.body.id;
 
@@ -74,8 +77,8 @@ router.get('/login',(req,res)=>{
     res.render('./admin/users/login')
 })
 
-//LOGIN ROUTER 
-router.post('/authenticate', (req,res)=>{
+//LOGIN ROUTE 
+router.post('/authenticate',(req,res)=>{
     let email = req.body.email;
     let password = req.body.password;
 
@@ -87,7 +90,7 @@ router.post('/authenticate', (req,res)=>{
                     id: user.id,
                     email: user.email
                 }
-                res.json(req.session.user)
+                res.redirect('/admin/articles')
             }else{
                 res.redirect('/login')
             }
@@ -96,6 +99,10 @@ router.post('/authenticate', (req,res)=>{
         }
     })
 })
-
+//LOGOUT ROUTE
+router.get('/logout',(req,res)=>{
+    req.session.user = undefined;
+    res.redirect('/')
+})
 
 module.exports = router

@@ -4,10 +4,11 @@ const Category = require('../categories/Category')
 const Article = require('./Articles')
 const slugify = require('slugify');
 const parse = require('nodemon/lib/cli/parse');
+const adminAuth = require('../middlewares/adminAuth')
 
 
 // POST ARTICLE VIEW
-router.get('/admin/articles/new', (req,res)=>{
+router.get('/admin/articles/new', adminAuth,(req,res)=>{
     Category.findAll().then((category)=>{
         res.render('admin/articles/new', {
             categories: category
@@ -16,7 +17,7 @@ router.get('/admin/articles/new', (req,res)=>{
     
 })
 // INDEX ARTICLES VIEW
-router.get('/admin/articles', (req,res)=>{
+router.get('/admin/articles',adminAuth,(req,res)=>{
     Article.findAll({
         include: [{model: Category}]
     }).then((articles)=>{
@@ -27,7 +28,7 @@ router.get('/admin/articles', (req,res)=>{
     })
 })
 // POST ARTICLE ROUTE
-router.post('/admin/articles/save',(req,res)=>{
+router.post('/admin/articles/save',adminAuth, (req,res)=>{
     let title = req.body.title
     let category = req.body.category;
     let body = req.body.body
@@ -44,7 +45,7 @@ router.post('/admin/articles/save',(req,res)=>{
     }
 })
 // DELETE ARTICLE ROUTE
-router.post('/admin/articles/delete', (req,res)=>{
+router.post('/admin/articles/delete',adminAuth,(req,res)=>{
     let id = req.body.id;
     if(id){
         if(!isNaN(id)){
@@ -62,7 +63,7 @@ router.post('/admin/articles/delete', (req,res)=>{
     }
 })
 // UPDATE ARTICLE VIEW
-router.get('/admin/articles/:slug',(req,res)=>{
+router.get('/admin/articles/:slug',adminAuth,(req,res)=>{
     let slug = req.params.slug
     Article.findOne({
         where:{
