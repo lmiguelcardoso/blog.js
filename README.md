@@ -1,6 +1,6 @@
 # blog using node.js, bootstrap, sql
 
-## LIBS USED 
+## FRAMEWORKS AND LIBS USED 
 - express
 - express-session
 - nodemon
