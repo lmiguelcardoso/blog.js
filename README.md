@@ -1,6 +1,6 @@
 # blog using node.js, bootstrap, sql
 
-## LIBS USED: 
+## LIBS USED 
 *express
 *express-session
 *nodemon
